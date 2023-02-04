@@ -14,9 +14,18 @@ const {v4: uuidv4} = require('uuid');
 
 const cookieParser = require("cookie-parser");
 
+app.use(cookieParser());
+
 app.use(bodyParser.json()); //This looks for incoming data
 
 app.use(express.static('public'));
+
+app.post('/rapidsteptest', async (req, res)=>{
+    const steps = req.body;
+    await redisClient.zAdd("Steps", steps, 0)
+    console.log('Steps', steps);
+    res.send('saved');
+});
 
 app.get("/", (req, res)=> {
     res.send("Hello Micah");
@@ -24,6 +33,7 @@ app.get("/", (req, res)=> {
 
 app.get("/validate", async(req, res) =>{
     const loginToken = req.cookies.stedicookie;
+    console.log("loginToken", loginToken)
     const loginUser = await redisClient.hGet('TokenMap', loginToken)
     res.send(loginUser);
 });
