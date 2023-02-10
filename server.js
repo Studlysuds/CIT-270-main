@@ -1,18 +1,13 @@
 const express = require ("express");
-
 const app = express();
-
-const port = 3000;
-
+const port = 443;
 const bodyParser = require ('body-parser');
-
 const Redis = require ('redis');
-
 const redisClient = Redis.createClient({url:"redis://127.0.0.1:6379"});
-
 const {v4: uuidv4} = require('uuid');
-
 const cookieParser = require("cookie-parser");
+const https = require('https');
+const fs = require('fs');
 
 app.use(cookieParser());
 
@@ -69,7 +64,19 @@ app.post('/login', async(req, res) =>{
     }
 });
 
-app.listen(port, () =>{
+// app.listen(port, () =>{
+//     redisClient.connect();
+//     console.log("Listening");
+// });
+// levi was here
+https.createServer(
+    {
+        key: fs.readFileSync('./server.key'),
+        cert: fs.readFileSync('./server.cert'),
+        ca:fs.readFileSync('./chain.pem')
+    },
+    app
+).listen(port, ()=>{
     redisClient.connect();
-    console.log("Listening");
+    console.log('Listening on port: '+port);
 });
