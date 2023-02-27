@@ -71,9 +71,9 @@ app.post('/login', async(req, res) =>{
 // levi was here
 https.createServer(
     {
-        key: fs.readFileSync('./server.key'),
-        cert: fs.readFileSync('./server.cert'),
-        ca:fs.readFileSync('./chain.pem')
+        key: fs.readFileSync('/etc/letsencrypt/live/micahsudweeks.cit270.com/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/micahsudweeks.cit270.com/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/micahsudweeks.cit270.com/fullchain.pem')
     },
     app
 ).listen(port, ()=>{
