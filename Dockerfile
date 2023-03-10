@@ -15,3 +15,4 @@ COPY . .
 
 # Allows the container to listen on port 443
 EXPOSE 443
+CMD ["npm","run","start"]
