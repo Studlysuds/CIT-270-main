@@ -2,34 +2,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: cit270micahservice
-  spec: 
-    replicas: 1
-    selector:
-      matchLabels:
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cit270micahservice
+  template:
+    metadata:
+      name: cit270micahservice
+      labels:
         app: cit270micahservice
-    template:
-      metadata:
-        name: cit270micahservice
-        labels:
-          app: cit270micahservice
-      spec:
-        containers:
-          - name: cit270micahservice
-          image: mythic-producer-379820/micah-api
-          volumeMounts:
-            - name: ssl
-              mountPath: "/etc/letsencrypt/live/SSL"
-          command: ["npm"]
-          args: ["run", "start"]
-          resources:
-            requests:
-              cpu: 0.125
-              memory: 500Mi
-            limits:
-              cpu: 0.125
-              memory: 600MI
-            imagePullPolicy: Always
-          volumes:
-            - name: ssl
-            secret:
-              secretName: micahcerts
+    spec:
+      containers:
+      - name: cit270micahservice
+        image: gcr.io/mythic-producer-379820/micah-api
+        volumeMounts:
+        - name: ssl
+          mountPath: "/etc/letsencrypt/live/micahsudweeks.cit270.com/"
+        command: ["npm"]
+        args: ["run", "start"]
+        resources:
+          requests:
+            cpu: 0.125
+            memory: 500Mi
+          limits:
+            cpu: 0.125
+            memory: 600Mi
+        imagePullPolicy: Always
+      volumes:
+      - name: ssl
+        secret:
+          secretName: micahcerts
